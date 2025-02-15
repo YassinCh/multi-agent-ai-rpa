@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.66.0",
+    "@tanstack/react-query-devtools": "^5.66.0",
     "@xyflow/react": "^12.4.3",
     "elkjs": "^0.9.3",
     "react": "^19.0.0",
