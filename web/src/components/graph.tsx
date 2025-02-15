@@ -3,6 +3,7 @@ import ELK from "elkjs/lib/elk.bundled.js";
 import React, { useCallback, useLayoutEffect } from "react";
 import {
   Background,
+  Controls,
   ReactFlow,
   addEdge,
   Panel,
@@ -15,12 +16,16 @@ import {
 
 import "@xyflow/react/dist/style.css";
 
+import StyledNode from './StyledNode';
+import StyledEdge from './StyledEdge';
+import { RiRobot2Line } from "react-icons/ri";
+
 const elk = new ELK();
 
 const elkOptions = {
   "elk.algorithm": "layered",
-  "elk.layered.spacing.nodeNodeBetweenLayers": "100",
-  "elk.spacing.nodeNode": "80",
+  "elk.layered.spacing.nodeNodeBetweenLayers": "130",
+  "elk.spacing.nodeNode": "40",
 };
 
 const getLayoutedElements = (
@@ -36,8 +41,8 @@ const getLayoutedElements = (
       ...node,
       // Adjust the target and source handle positions based on the layout
       // direction.
-      targetPosition: isHorizontal ? "left" : "top",
-      sourcePosition: isHorizontal ? "right" : "bottom",
+      targetPosition: isHorizontal ? "left" : "left",
+      sourcePosition: isHorizontal ? "right" : "right",
 
       // Hardcode a width and height for elk to use when layouting.
       width: 150,
@@ -101,31 +106,67 @@ export default function Graph() {
 
   // Calculate the initial layout on mount.
   useLayoutEffect(() => {
-    onLayout({ direction: "DOWN", useInitialNodes: true });
+    onLayout({ direction: "RIGHT", useInitialNodes: true });
   }, []);
 
-  return (
-    <div style={{ width: "100vw", height: "100vh" }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onConnect={onConnect}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        fitView
-        style={{ backgroundColor: "#F7F9FB" }}
-      >
-        <Panel position="top-right">
-          <button onClick={() => onLayout({ direction: "DOWN" })}>
-            vertical layout
-          </button>
+  const nodeTypes = {
+    styled: StyledNode,
+  };
+  
+  const edgeTypes = {
+    styled: StyledEdge,
+  };
 
-          <button onClick={() => onLayout({ direction: "RIGHT" })}>
-            horizontal layout
-          </button>
-        </Panel>
-        <Background />
-      </ReactFlow>
-    </div>
+  const defaultEdgeOptions = {
+    type: 'styled',
+    markerEnd: 'edge-triangle',
+  };
+
+  return (
+    <>
+      <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
+      fitView
+      nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
+      defaultEdgeOptions={defaultEdgeOptions}
+      proOptions={{ hideAttribution: true }}
+      colorMode="dark"    
+      >
+      <Controls showInteractive={false} />
+      <svg>
+        <defs>
+          <linearGradient id="edge-gradient">
+            <stop offset="0%" stopColor="#7B1E28" />
+            <stop offset="100%" stopColor="#B3202B" />
+          </linearGradient>
+
+          <marker
+            id="edge-triangle"
+            viewBox="-10 -10 20 20"
+            refX="-8"
+            refY="0"
+            markerWidth="12"
+            markerHeight="12"
+            orient="auto-start-reverse"
+          >
+            <path
+              d="M 0 0 L -8 -8 L -8 8 Z"
+              fill="url(#edge-gradient)"
+              stroke="none"
+            />
+          </marker>
+        </defs>
+      </svg>
+      <button className="layout-button" onClick={() => onLayout({ direction: "RIGHT" })}>
+        Reorganize Layout
+      </button>
+      <Background />
+    </ReactFlow>
+    </>
   );
 }
