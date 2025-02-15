@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "multi-agent-ai-rpa"
+version = "0.1.0"
+description = "A multi-agent AI RPA project"
+authors = ["Yassin"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langgraph = "^0.2.72"
+langgraph-cli = {extras = ["inmem"], version = "^0.1.71"}
+playwright = "^1.50.0"
+pydantic-ai = "^0.0.24"
+python-dotenv = "^1.0.1"
+pydantic = {extras = ["dotenv"], version = "^2.10.6"}
+pydantic-settings = "^2.7.1"
+django = "^5.1.6"
+whitenoise = "^6.9.0"
+django-tailwind = "^3.8.0"
+django-unfold = "^0.48.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

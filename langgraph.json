@@ -1,0 +1,9 @@
+{
+  "dependencies": [
+    "."
+  ],
+  "graphs": {
+    "agent": "./src/rpa_graph.py:graph"
+  },
+  "env": ".env"
+}

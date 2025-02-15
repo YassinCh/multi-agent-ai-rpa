@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flowchart Example</title>
+  <!-- Tailwind CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.7/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Cytoscape.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.1/cytoscape.min.js"></script>
+
+  <style>
+    /* Make page fill the window */
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Container for Cytoscape */
+    #cy {
+      width: 100%;
+      height: calc(100% - 60px); /* leave room for buttons at top */
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Layout Buttons -->
+  <div class="p-4 space-x-2 bg-white shadow flex items-center">
+    <button 
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" 
+      onclick="setLayout('breadthfirst')">
+      Breadthfirst
+    </button>
+    <button 
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" 
+      onclick="setLayout('grid')">
+      Grid
+    </button>
+    <button 
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" 
+      onclick="setLayout('circle')">
+      Circle
+    </button>
+    <button 
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" 
+      onclick="setLayout('concentric')">
+      Concentric
+    </button>
+    <button 
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" 
+      onclick="setLayout('cose')">
+      CoSE
+    </button>
+    <button 
+      class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" 
+      onclick="setLayout('random')">
+      Random
+    </button>
+  </div>
+
+  <!-- Cytoscape Container -->
+  <div id="cy"></div>
+
+  <script>
+    // Elements passed from Django
+    var elements = {{ elements|safe }};
+
+    // Initialize Cytoscape
+    var cy = cytoscape({
+      container: document.getElementById('cy'),
+      elements: elements,
+      layout: {
+        name: 'breadthfirst', // default layout
+        directed: true,
+        orientation: 'horizontal', // left-to-right
+        padding: 50,
+        spacingFactor: 1.2,
+      },
+      style: [
+        {
+          selector: 'node',
+          style: {
+            /* White "card" style: */
+            'shape': 'round-rectangle',
+            'background-color': '#ffffff',
+            'border-width': 2,
+            'border-color': '#e2e8f0', /* tailwind gray-200 */
+            'border-radius': '8px',    /* ~ .5rem */
+
+            /* Node size */
+            'width': '200px',
+            'height': '80px',
+
+            /* Label styling */
+            'label': 'data(label)',
+            'font-size': '16px',
+            'font-weight': '500',
+            'text-halign': 'center',
+            'text-valign': 'center',
+            'color': '#1f2937', /* tailwind gray-800 */
+          }
+        },
+        {
+          /* Highlight node if data(active) == "true" */
+          selector: 'node[active = "true"]',
+          style: {
+            'border-color': '#4CAF50', /* green */
+            'border-width': 4,
+          }
+        },
+        {
+          /* Default edge style (forward edges) */
+          selector: 'edge.forwardEdge',
+          style: {
+            'width': 3,
+            'line-color': '#999',
+            'target-arrow-color': '#999',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier',  // simple curve
+          }
+        },
+        {
+          /* Backward edge style (unbundled-bezier to offset the path) */
+          selector: 'edge.backwardEdge',
+          style: {
+            'width': 3,
+            'line-color': '#999',
+            'target-arrow-color': '#999',
+            'target-arrow-shape': 'triangle',
+
+            'curve-style': 'unbundled-bezier',
+            /* These control how the curve bends.
+               Increase or decrease to see how it moves. */
+            'control-point-distances': [50],
+            'control-point-weights': [0.5],
+          }
+        },
+      ]
+    });
+
+    // Switch layouts on button click
+    function setLayout(name) {
+      cy.layout({
+        name: name,
+        directed: true,
+        orientation: 'horizontal',
+        padding: 50,
+        spacingFactor: 1.2,
+      }).run();
+    }
+  </script>
+</body>
+</html>
