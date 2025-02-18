@@ -1,5 +1,5 @@
 # AUTO-GENERATED FILE. DO NOT EDIT MANUALLY.
-# Generated on 2025-02-18T02:03:11.415367
+# Generated on 2025-02-18T01:55:11.591326
 
 import asyncio
 
@@ -21,7 +21,6 @@ async def main(url):
             await BrowserInteract.input_text(7, "123-456-7890", context)
             await BrowserInteract.input_text(15, "1997-10-19", context)
             await BrowserInteract.input_text(9, "123 Main St", context)
-            print(msg)
         except Exception as e:
             print("Error during page:" + str(e))
             raise e

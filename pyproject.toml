@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "A multi-agent AI RPA project"
 authors = ["Yassin"]
 readme = "README.md"
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
