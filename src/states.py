@@ -1,27 +1,36 @@
 from pydantic import BaseModel
-from typing import Dict, Any, List, Literal
-
+from typing import Dict, Any, List, Literal, Optional
+from dataclasses import field
 import json
-from .data import UserData, FormField
+from .data import UserData
+from .browser.context import BrowserState, BrowserContext
 
 
 class AgentState(BaseModel):
     """Model for agent state"""
 
+    # TODO: Clean and add where needed
+
     url: str
     user_data: UserData
-    form_fields: List[FormField] = []
-    field_mappings: Dict[str, Dict[str, Any]] = {}
+    user_field: Optional[str] = ""
+    element_index: Optional[int] = None
+    action_line: Optional[str] = None
+    action_history: List[str] = field(default_factory=list)
+    proccessed_fields: List[str] = field(default_factory=list)
+    next_step: str = "__end__"
+    browser_state: Optional[BrowserState] = None
+    browser_context: Optional[BrowserContext] = None
+
     success: bool = False
     error: str | None = None
-    current_step: str = "analyze_form"
 
 
 class InputState(BaseModel):
     """Model for input state"""
 
     url: str
-    user_data: Dict[str, Any]
+    user_data: UserData
 
 
 def parse_user_data(raw_data: Any) -> UserData:

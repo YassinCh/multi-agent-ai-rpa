@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "A multi-agent AI RPA project"
 authors = ["Yassin"]
 readme = "README.md"
-package-mode = false
+packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -19,6 +19,10 @@ django = "^5.1.6"
 whitenoise = "^6.9.0"
 django-tailwind = "^3.8.0"
 django-unfold = "^0.48.0"
+markdownify = "^0.14.1"
+debugpy = "^1.8.12"
+langchain = "^0.3.18"
+aiofiles = "^24.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
