@@ -5,5 +5,8 @@
   "graphs": {
     "agent": "./src/rpa_graph.py:graph"
   },
-  "env": ".env"
+  "env": ".env",
+  "scripts": {
+    "prestart": "python ./scripts/setup.py"
+  }
 }
