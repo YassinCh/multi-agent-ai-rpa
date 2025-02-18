@@ -8,3 +8,4 @@ venv
 .env
 streamlit_ui.py
 test_lines.py
+.vscode/settings.json

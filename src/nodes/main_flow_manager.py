@@ -75,8 +75,7 @@ async def main_flow_manager(
         # All fields have been proccessed
         # TODO: All fields on this page have been proccessed
         # this should link to finding and proccessing the next page
-        await create_execution_file(action_history, state.url)
-        next_step = "__end__"
+        next_step = "write_execution_file"
 
     return {
         "browser_state": browser_state,
