@@ -34,3 +34,4 @@ web/*.local
 *.sln
 *.sw?
 reference_material
+.vscode
